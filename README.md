@@ -1,6 +1,6 @@
 # Drone Hopper - Professional Website
 
-![Drone Hopper Logo](https://via.placeholder.com/150x50/000000/FFFFFF?text=Drone+Hopper) <!-- Cambia por tu logo real si lo tienes en el repo -->
+![Drone Hopper Logo](icons/logo.png)
 
 **Drone Hopper S.L.U.** is a Madrid-based aeronautical engineering company specializing in the design, manufacturing, and commercialization of **high-payload unmanned aerial systems (UAS/drones)** for industrial and professional applications.
 
@@ -52,10 +52,3 @@ drone-hopper.com/
 1. Clone the repository:
    ```bash
    git clone https://github.com/PabloPenaFlores/DroneHopper.git
-
-### Consejos para mejorarlo
-- **Añade imágenes reales**: Sube tu logo, fotos de drones o capturas del sitio a la carpeta `images/` en el repo, y actualiza el enlace en el README (reemplaza el placeholder).
-- **Hazlo más visual**: Después de pushear, GitHub renderiza el README con imágenes y formato bonito.
-- **Añade badges** (opcional): Por ejemplo, para licencia o visitas:
-  ```markdown
-  [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
