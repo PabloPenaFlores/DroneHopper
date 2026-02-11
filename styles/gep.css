@@ -1,0 +1,36 @@
+/* GEP specific styles */
+.gep-content {
+    padding: 100px 0;
+    background: rgba(0,0,0,0.02); /* o el color de fondo que uses */
+}
+
+.gep-document h4 {
+    font-size: 1.6rem;
+    margin: 2.5rem 0 1rem;
+    color: var(--primary-color); /* o tu color principal */
+}
+
+.gep-document h5 {
+    font-size: 1.35rem;
+    margin: 2rem 0 0.8rem;
+    color: #b8a6a6;
+}
+
+.gep-document ul.clean-list {
+    margin: 1rem 0 1.5rem 1.5rem;
+}
+
+.gep-document ul.clean-list li {
+    margin-bottom: 0.6rem;
+    position: relative;
+    padding-left: 1.8rem;
+}
+
+.gep-document ul.clean-list li::before {
+    content: "\f058"; /* check-circle de FA */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+}

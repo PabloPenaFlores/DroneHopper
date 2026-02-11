@@ -71,27 +71,35 @@ function initNavScroll() {
     
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
+            const href = link.getAttribute('href');
             
-            if (targetSection) {
-                targetSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            // Solo procesar si es un ancla interna (empieza por #) y NO tiene target="_blank"
+            if (href.startsWith('#') && !link.hasAttribute('target')) {
+                e.preventDefault();  // solo aquí evitamos el comportamiento por defecto
                 
-                // Update active nav link
-                document.querySelector('.nav-link.active')?.classList.remove('active');
-                link.classList.add('active');
+                const targetId = href;  // ya incluye el #
+                const targetSection = document.querySelector(targetId);
                 
-                // Close mobile menu
-                document.querySelector('.nav-list')?.classList.remove('active');
+                if (targetSection) {
+                    targetSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Update active nav link
+                    document.querySelector('.nav-link.active')?.classList.remove('active');
+                    link.classList.add('active');
+                    
+                    // Close mobile menu
+                    document.querySelector('.nav-list')?.classList.remove('active');
+                }
             }
+            // Si NO empieza por # → dejamos que el navegador haga lo normal (nueva pestaña, otra página, etc.)
+            // No llamamos preventDefault() en esos casos
         });
     });
     
-    // Update active link on scroll
+    // Update active link on scroll (esto solo afecta secciones internas, se puede dejar igual)
     window.addEventListener('scroll', () => {
         const sections = document.querySelectorAll('section');
         let current = '';
@@ -105,6 +113,7 @@ function initNavScroll() {
         });
         
         navLinks.forEach(link => {
+            // Solo marcar active si el href coincide con #current
             link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
         });
     });
@@ -133,17 +142,18 @@ function initMobileMenu() {
 function initContactForm() {
     const form = document.querySelector('.contact-form');
     
+    // ← Add this guard clause
+    if (!form) return;   // silently exit if no contact form on this page
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Simulate form submission
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         
         submitBtn.textContent = 'Enviando...';
         submitBtn.disabled = true;
         
-        // Simulate API call
         setTimeout(() => {
             alert('¡Gracias! Tu solicitud de asesoría ha sido enviada. Te contactaremos en 24h.');
             form.reset();
@@ -188,7 +198,6 @@ window.addEventListener('resize', () => {
     // Reinitialize carousel on resize if needed
 });
 
-// NEWSSSSS
 // =========================
 // NEW: Gallery Lightbox
 // =========================
