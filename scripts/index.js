@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initContactForm();
     initCookies();
     initMobileMenu();
+    initScrollReveal();
+    initSpotlight();
 });
 
 
@@ -323,3 +325,69 @@ document.addEventListener('DOMContentLoaded', function() {
   initStarterLoader();
 });
 
+
+// =========================
+// NEW: Scroll reveal (adds/removes a class only — no content or DOM
+// structure change, respects prefers-reduced-motion)
+// =========================
+function initScrollReveal(){
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const targets = document.querySelectorAll(
+    '.service-card, .project-card, .platformX-card, .person-card, ' +
+    '.section-header, .fanhopper-card, .fanhopper-media, .contact-form, ' +
+    '.contact-info'
+  );
+
+  if (!targets.length) return;
+
+  targets.forEach(el => el.classList.add('reveal'));
+
+  if (prefersReduced || !('IntersectionObserver' in window)) {
+    targets.forEach(el => el.classList.add('in-view'));
+    return;
+  }
+
+  const groups = new Map(); // parent -> running index, for a light stagger
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const el = entry.target;
+      const parent = el.parentElement;
+      const idx = groups.get(parent) || 0;
+      groups.set(parent, idx + 1);
+
+      el.style.transitionDelay = Math.min(idx * 90, 360) + 'ms';
+      el.classList.add('in-view');
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' });
+
+  targets.forEach(el => observer.observe(el));
+}
+
+
+// =========================
+// NEW: Pointer-tracking spotlight for buttons & cards
+// (sets CSS custom properties only — no content or markup change)
+// =========================
+function initSpotlight(){
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const els = document.querySelectorAll(
+    '.btn, .service-card, .project-card, .platformX-card, .person-card'
+  );
+
+  els.forEach(el => {
+    el.addEventListener('pointermove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--mx', x + '%');
+      el.style.setProperty('--my', y + '%');
+    });
+  });
+}
